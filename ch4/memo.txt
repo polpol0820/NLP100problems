@@ -1,0 +1,45 @@
+4章　形態素解析
+
+condaの仮想環境を新たに設定
+conda activate -n nlp100 python=3.7
+
+pythonでMeCabを使えるようにする.
+
+①MeCabインストール
+sudo apt update
+sudo apt upgrade
+sudo apt install mecab
+sudo apt install mecab-ipadic-utf8
+sudo apt insatll libmecab-dev
+git clone https://github.com/neologd/mecab-ipadic-neologd.git
+cd mecab-ipadic-neologd
+sudo bin/install-mecab-ipadic-neologd
+Do you want to install mecab-ipadic-neologd?
+と聞かれるからyes
+聞かれずに途中で止まるなら何かインストールし忘れてるのがあるかも
+②conda環境の調節
+conda install -c anaconda swig
+pip install mecab-python3=0.996.1
+
+################################################################################
+新語辞書を使う場合Taggerにneologを指定
+import MeCab
+
+mecab = MeCab.Tagger ('-d /usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd')
+
+text = '鬼滅の刃の映画を見に行った'
+m = mecab.parse(text)
+print(m)
+
+鬼滅の刃	名詞,固有名詞,一般,*,*,*,鬼滅の刃,キメツノヤイバ,キメツノヤイバ
+の	助詞,連体化,*,*,*,*,の,ノ,ノ
+映画	名詞,一般,*,*,*,*,映画,エイガ,エイガ
+を	助詞,格助詞,一般,*,*,*,を,ヲ,ヲ
+見	動詞,自立,*,*,一段,連用形,見る,ミ,ミ
+に	助詞,格助詞,一般,*,*,*,に,ニ,ニ
+行っ	動詞,自立,*,*,五段・カ行促音便,連用タ接続,行く,イッ,イッ
+た	助動詞,*,*,*,特殊・タ,基本形,た,タ,タ
+################################################################################
+
+
+途中からたぶん間違えている。

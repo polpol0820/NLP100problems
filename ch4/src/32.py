@@ -1,0 +1,29 @@
+#動詞の基本形
+
+import MeCab
+
+txt_path = "./../neko.txt.mecab"
+morphs = []
+sentences = []
+with open(txt_path,mode='r') as f:
+    for line in f: #１行ずつ読み込む
+        if line != 'EOS\n':
+            fields = line.split("\t")
+            if len(fields) != 2 or fields[0] == "": #空白と改行は無視
+                continue
+            else:
+                attr = fields[1].split(",")
+                morph = {"surface":fields[0],"base":attr[6],"pos":attr[0],"pos1":attr[1]}
+                morphs.append(morph)
+        else:
+            sentences.append(morphs)
+            morphs = []
+
+verb_list_base = set()
+for sentence in sentences:
+    for morph in sentence:
+        if morph["pos"] == "動詞":
+            verb_list_base.add(morph["base"])
+
+for verb in verb_list_base:
+    print(verb)
